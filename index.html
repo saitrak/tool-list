@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raidpo AI Tool Ideas To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .input-section {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        #taskInput {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+        #addTaskBtn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        #addTaskBtn:hover {
+            background-color: #45a049;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+            word-break: break-word;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+        li.completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+        input[type="checkbox"] {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        .delete-btn {
+            margin-left: auto;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .delete-btn:hover {
+            background-color: #da190b;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            #taskInput {
+                font-size: 14px;
+            }
+            #addTaskBtn {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+            li {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💡 Raidpo AI Tool Ideas To-Do List</h1>
+        <div class="input-section">
+            <input type="text" id="taskInput" placeholder="Add a new tool idea...">
+            <button id="addTaskBtn">Add</button>
+        </div>
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        const taskList = document.getElementById('taskList');
+        const taskInput = document.getElementById('taskInput');
+        const addTaskBtn = document.getElementById('addTaskBtn');
+
+        // Initial tool ideas
+        const initialTasks = [
+            "1. AI Text Summarizer – Paste any article or essay and get a short, medium, or long summary instantly.",
+            "2. AI Paraphraser – Reword text to sound more formal, casual, or unique.",
+            "3. Grammar & Spelling Checker – Automatically detect grammar issues and suggest better sentences.",
+            "4. Sentence Expander – Turn short ideas into full sentences or paragraphs.",
+            "5. Text Simplifier – Make any complex sentence easier to read.",
+            "6. Tone Changer – Rewrite text in a friendly, professional, or persuasive tone.",
+            "7. Email Generator – Generate full professional emails from short notes.",
+            "8. Cover Letter Maker – Create job-specific cover letters from your resume and role title.",
+            "9. Resume Bullet Point Generator – Write powerful resume bullets from your job tasks.",
+            "10. Product Description Writer – Generate attractive product descriptions for online stores.",
+            "11. Blog Idea Generator – Suggest dozens of blog post topics for a keyword.",
+            "12. Article Outline Creator – Turn a topic into a full outline with headings and key points.",
+            "13. Hashtag Generator – Suggest trending hashtags for any topic or niche.",
+            "14. Ad Copy Generator – Write catchy ads for Google, Facebook, or Instagram.",
+            "15. Meta Description Generator – Create SEO meta descriptions and titles for web pages.",
+            "16. Keyword Extractor – Pull out the most important keywords from any text.",
+            "17. Plagiarism Detector – Compare two pieces of text and highlight similarities.",
+            "18. Citation Generator – Automatically format citations in APA, MLA, or Chicago style.",
+            "19. AI Note Summarizer – Summarize uploaded text notes or PDFs into short summaries.",
+            "20. Script Writer – Generate YouTube, TikTok, or podcast scripts from a topic idea.",
+            "21. Caption Generator – Create funny, engaging, or motivational captions for social posts.",
+            "22. Headline Generator – Generate 10+ attention-grabbing titles for a topic.",
+            "23. Story Plot Generator – Get random creative story ideas with characters and settings.",
+            "24. Poem Generator – Create poems in any style (romantic, sad, funny, haiku, etc.).",
+            "25. Quote Maker – Generate unique inspirational or motivational quotes.",
+            "26. Bio Generator – Create short bios for Instagram, LinkedIn, or portfolio sites.",
+            "27. Tweet Thread Writer – Generate multi-part Twitter threads from a topic.",
+            "28. AI Chat Roleplay / Bot Talk – Chat with themed bots (writer, teacher, friend, motivator).",
+            "29. Emoji Translator – Turn sentences into emoji versions or vice versa.",
+            "30. Text to Hashtag Converter – Convert any sentence into relevant hashtags.",
+            "31. Essay Rewriter – Fix flow, grammar, and structure of essays automatically.",
+            "32. Reading Time Calculator – Estimate how long a piece of text takes to read.",
+            "33. Word Counter / Character Counter – Basic utility to count words, chars, and paragraphs.",
+            "34. Letter Counter by Frequency – Analyze which letters appear most often.",
+            "35. Text Case Converter – Convert text to UPPERCASE, lowercase, Title Case, or Sentence case.",
+            "36. Remove Line Breaks Tool – Clean messy text pasted from PDFs or websites.",
+            "37. Remove Extra Spaces Tool – Quickly remove unwanted double or triple spaces.",
+            "38. Sort Text Lines Alphabetically – Organize lists of words or lines in order.",
+            "39. Duplicate Line Remover – Delete repeated lines from large text blocks.",
+            "40. Reverse Text Tool – Flip text backward (fun utility).",
+            "41. Word Frequency Analyzer – See how often each word appears in text.",
+            "42. Random Word Generator – Generate random words by length or category.",
+            "43. Password Generator – Create secure passwords with length and symbols options.",
+            "44. Username Generator – Create creative usernames for social media or gaming.",
+            "45. Nickname Generator – Generate funny or cool nicknames.",
+            "46. Domain Name Ideas Tool – Suggest available website names for a topic.",
+            "47. Business Name Generator – Generate creative brand names with meanings.",
+            "48. Startup Idea Generator – Randomly combine problems and solutions for startup ideas.",
+            "49. Project Name Generator – Suggest names for tech or creative projects.",
+            "50. AI Slogan Generator – Generate catchy slogans for brands or campaigns.",
+            "51. Resume Formatter – Convert raw resume text into a neat, formatted layout.",
+            "52. Checklist Maker – Turn a paragraph or plan into a clean checklist.",
+            "53. To-Do List Creator – Generate structured daily task lists from goals.",
+            "54. Habit Tracker Generator – Create printable or digital habit tracking templates.",
+            "55. Daily Journal Prompt Generator – Give users journaling prompts daily.",
+            "56. Quote of the Day Tool – Display a random motivational quote daily.",
+            "57. Goal Planner Tool – Break large goals into small achievable steps.",
+            "58. Meal Plan Generator – Create simple meal ideas by day or diet type (text-based).",
+            "59. Workout Plan Generator – Generate daily/weekly exercise schedules (no images needed).",
+            "60. Budget Planner Tool – Create a text-based monthly budget layout.",
+            "61. Expense Tracker Template Maker – Generate a downloadable CSV/Sheet layout.",
+            "62. Time Zone Converter – Convert times easily between countries.",
+            "63. Date Calculator – Find days between two dates, or add/subtract days.",
+            "64. Countdown Timer Generator – Create sharable countdowns (like events or launches).",
+            "65. Age Calculator – (already exists but add birthdate history fun facts).",
+            "66. BMI Calculator – Calculate Body Mass Index from height/weight.",
+            "67. Unit Converter – Convert between units (length, weight, temp, volume).",
+            "68. Percentage Calculator – Solve simple % increase/decrease problems.",
+            "69. Loan / EMI Calculator – Compute monthly installments for loans.",
+            "70. Tip Calculator – Split bills and tips among people easily.",
+            "71. Text Diff Tool – Compare two text blocks and highlight differences.",
+            "72. JSON Formatter – Beautify and validate JSON.",
+            "73. HTML Formatter – Beautify messy HTML.",
+            "74. CSS Beautifier – Auto-format and clean CSS code.",
+            "75. JS Minifier / Beautifier – Format or compress JavaScript.",
+            "76. Regex Tester – Test and validate regular expressions with live matches.",
+            "77. Markdown Editor – Live preview markdown and export HTML.",
+            "78. Color Converter – Convert between HEX, RGB, HSL.",
+            "79. Color Palette Extractor – Upload an image → get text color codes (no heavy model).",
+            "80. Gradient Generator – Generate random or custom CSS gradients.",
+            "81. Box Shadow Generator – Create custom CSS shadows visually.",
+            "82. Border Radius Preview Tool – Adjust and copy CSS border-radius values.",
+            "83. Font Pairing Tool – Suggest Google Font combinations for design.",
+            "84. Favicon Generator – Upload image → convert to .ico files (no AI needed).",
+            "85. QR Code Styler – Add colors or logos to your QR codes (build on your QR tools).",
+            "86. Barcode Generator – Generate EAN, UPC, or Code-128 barcodes.",
+            "87. URL Expander – Reveal the full original URL behind shortened links.",
+            "88. IP Info Finder – Show location and ISP details for an IP (free API).",
+            "89. Website Status Checker – Check if a website is up or down.",
+            "90. Ping Tester – Simple tool to test website response time.",
+            "91. Meta Tag Analyzer – Analyze any webpage for SEO tags.",
+            "92. Broken Link Checker – Scan a URL for broken links.",
+            "93. Screenshot Generator – Capture webpage screenshots (use free services).",
+            "94. Privacy Policy Generator – Create basic website privacy policy text.",
+            "95. Terms & Conditions Generator – Generate standard T&C templates.",
+            "96. Cookie Policy Generator – Write a simple cookie notice.",
+            "97. Disclaimer Generator – Create general or medical/legal disclaimers.",
+            "98. Invoice Generator – Fill and export invoices in PDF format.",
+            "99. Receipt Maker – Generate simple payment receipts.",
+            "100. CV Template Generator – Create downloadable resume templates with sample text.",
+            "101. Study Flashcard Creator – Turn text into Q&A cards for study.",
+            "102. Quiz Generator – Convert text or topic into multiple-choice questions.",
+            "103. Riddle Generator – Create random riddles or trivia questions.",
+            "104. Trivia Quiz Game – Simple text-based quiz app with scoring.",
+            "105. Poll Maker – Create shareable polls with instant results.",
+            "106. Dictionary / Word Meaning Finder – Use free dictionary APIs.",
+            "107. Synonym Finder – Suggest synonyms and antonyms.",
+            "108. Rhyming Words Finder – Find rhymes for any word (use Datamuse API).",
+            "109. Acronym Creator – Make fun acronyms for phrases.",
+            "110. Scramble Text Game – Shuffle letters in words to make puzzles.",
+            "111. Random Prompt Generator – Generate random creative prompts for writing.",
+            "112. Motivational Challenge Generator – Suggest daily mini challenges for users.",
+            "113. Bucket List Maker – Let users build and export their life goals list.",
+            "114. Affirmation Generator – Generate positive self-affirmations daily.",
+            "115. Daily Planner Generator – Create text-based daily planner layouts.",
+            "116. Calendar Reminder Maker – Generate calendar text (ics or reminders).",
+            "117. Book Summary Generator – Summarize books by title or uploaded text.",
+            "118. Study Schedule Creator – Generate weekly study timetables.",
+            "119. Resume Keyword Checker – Match resume text with a job description.",
+            "120. Job Description Analyzer – Extract skills, experience, and action verbs.",
+            "121. Task Prioritizer – Sort to-dos by urgency or importance.",
+            "122. Mind Map Generator (text-only) – Show topics and subtopics as indented lists.",
+            "123. Goal Tracker Generator – Create structured goal sheets in text or CSV.",
+            "124. AI Chat Assistant – Add a general chat feature using free LLM endpoints.",
+            "125. Prompt Generator – Generate creative prompts for ChatGPT, writing, or art tools.",
+            "126. AI Persona Chat – Pre-built personalities (teacher, coach, coder, etc.).",
+            "127. Business Email Reply Tool – Auto-generate professional replies to emails.",
+            "128. Meeting Notes Summarizer – Paste transcript → get short meeting summary.",
+            "129. Decision Helper Tool – Pros & cons analyzer that scores decisions.",
+            "130. Contract Clause Helper – Generate simple, reusable contract lines.",
+            "131. FAQ Generator – Build FAQs for any website or topic.",
+            "132. Event Description Writer – Generate catchy event blurbs for pages or flyers.",
+            "133. AI Resume Reviewer – Analyze resumes and suggest improvements.",
+            "134. Text Emotion Detector – Detect sentiment (positive/neutral/negative).",
+            "135. Sarcasm Detector (fun) – Try to detect sarcasm in given text.",
+            "136. Text Translator (multi-language) – You already have one; add auto-detect and text-to-speech.",
+            "137. Quote Wallpaper Generator (text-only) – Generate downloadable quote wallpapers using CSS + canvas.",
+            "138. Markdown to HTML Converter – Convert markdown to HTML instantly.",
+            "139. HTML to Markdown Converter – Reverse version.",
+            "140. JSON to CSV Converter – Simple converter tool.",
+            "141. CSV to JSON Converter – Reverse version.",
+            "142. Text to Table Converter – Turn formatted text into tables.",
+            "143. Word Cloud Generator – Generate simple SVG/Canvas word clouds.",
+            "144. Emoji Counter – Count and list all emojis in a text.",
+            "145. Language Detector – Detect which language a text is written in.",
+            "146. AI Prompt Saver / Library – Let users save and share their prompts.",
+            "147. Quote Combiner – Mix two quotes and create a new one.",
+            "148. Joke Generator – Generate random or themed jokes.",
+            "149. Pickup Line Generator – Generate funny or cheesy pickup lines.",
+            "150. Roast Generator – Generate lighthearted, friendly roasts for fun.",
+            "151. Compliment Generator – Generate wholesome compliments.",
+            "152. Would-You-Rather Generator – Generate “this or that” questions.",
+            "153. Truth or Dare Generator – Generate fun prompts for games.",
+            "154. Fact Generator – Generate random facts about science, space, or history.",
+            "155. Number Trivia Generator – Facts about any number.",
+            "156. Country Info Finder – Get population, currency, capital, and timezone.",
+            "157. IP to Location Tool – Show approximate city and region.",
+            "158. Currency Rate Checker – Live rates between two currencies (you have converter; add chart view).",
+            "159. Weather by City – You have weather; add hourly/daily forecast option.",
+            "160. AI Command Explainer – Explain terminal commands or code lines in simple English.",
+            "161. AI Code Commenter – Add inline comments to code blocks.",
+            "162. Regex Explainer – Explain regex meaning in plain English.",
+            "163. URL Encoder/Decoder – Encode or decode URLs safely.",
+            "164. Base64 Encoder/Decoder – Convert text or files to base64 and back.",
+            "165. Text Encryption Tool – Simple password-based encryption/decryption (no server storage).",
+            "166. Morse Code Converter – Text ↔ Morse code.",
+            "167. Binary Translator – Text ↔ Binary.",
+            "168. Hex to RGB Converter – Simple color conversion utility.",
+            "169. UUID Generator – Generate unique IDs for devs.",
+            "170. Lorem Ipsum Generator – Generate dummy placeholder text.",
+            "171. Random Quote API – Public endpoint returning a random quote.",
+            "172. Random Joke API – Public endpoint returning a random joke.",
+            "173. Fake Data Generator – Create fake names, emails, and addresses for testing.",
+            "174. Text Encryptor with Custom Key – Encrypt text using any custom password.",
+            "175. Bookmark Generator – Create online bookmarks saved to local storage.",
+            "176. Custom Greeting Card Generator (text-only) – Generate shareable greetings.",
+            "177. Countdown Message Generator – Create countdown text that updates daily.",
+            "178. Event Reminder Creator – Generate event reminders for calendar apps.",
+            "179. Gift Idea Generator – Suggest gift ideas based on age, gender, or interest.",
+            "180. Relationship Advice Bot (text-only) – Give neutral advice for relationships/friendships.",
+            "181. Decision Coin Flipper / Dice Roller – Simple randomness fun tool.",
+            "182. Fortune Cookie Generator – Generate random fortunes.",
+            "183. Horoscope Generator – Generate daily horoscopes textually.",
+            "184. Dream Interpreter – Explain dream meanings (text-based fun).",
+            "185. Life Advice Generator – Generate short motivational advice lines.",
+            "186. Random Insult Generator (fun) – Generate silly non-offensive insults.",
+            "187. Affirmation Wallpaper (text-only) – Create an SVG with affirmations and gradients.",
+            "188. ASCII Art Generator (text-based) – Convert text into ASCII designs.",
+            "189. Banner Text Maker – Create large text banners in ASCII style.",
+            "190. Table Generator – Create ASCII or Markdown tables easily.",
+            "191. Checklist Formatter – Turn bullet lists into formatted checklists.",
+            "192. Contact Card Generator (vCard) – Generate downloadable contact .vcf files.",
+            "193. Calendar Event Generator (.ics) – Create events users can import.",
+            "194. Email Signature Generator – Create professional signature templates.",
+            "195. Link in Bio Page Builder (text-only) – Let users create simple link hub pages.",
+            "196. Profile Tagline Generator – Generate short catchy taglines for bios.",
+            "197. Newsletter Subject Generator – Suggest engaging subject lines.",
+            "198. Product Review Generator – Write short reviews for demo shops.",
+            "199. AI Chat Prompter Helper – Suggest how to ask ChatGPT better questions.",
+            "200. Tool Combo Generator – Suggest which of your site’s tools to combine for workflows."
+        ];
+
+        // Load tasks from local storage or use initial if none
+        let tasks = JSON.parse(localStorage.getItem('raidpoTasks')) || initialTasks.map(task => ({ text: task, completed: false }));
+
+        // Function to render tasks
+        function renderTasks() {
+            taskList.innerHTML = '';
+            tasks.forEach((task, index) => {
+                const li = document.createElement('li');
+                li.classList.toggle('completed', task.completed);
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.checked = task.completed;
+                checkbox.addEventListener('change', () => toggleCompleted(index));
+
+                const textSpan = document.createElement('span');
+                textSpan.textContent = task.text;
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.classList.add('delete-btn');
+                deleteBtn.addEventListener('click', () => deleteTask(index));
+
+                li.appendChild(checkbox);
+                li.appendChild(textSpan);
+                li.appendChild(deleteBtn);
+                taskList.appendChild(li);
+            });
+        }
+
+        // Add new task
+        function addTask() {
+            const text = taskInput.value.trim();
+            if (text) {
+                tasks.push({ text, completed: false });
+                saveTasks();
+                renderTasks();
+                taskInput.value = '';
+            }
+        }
+
+        // Toggle completed
+        function toggleCompleted(index) {
+            tasks[index].completed = !tasks[index].completed;
+            saveTasks();
+            renderTasks();
+        }
+
+        // Delete task
+        function deleteTask(index) {
+            tasks.splice(index, 1);
+            saveTasks();
+            renderTasks();
+        }
+
+        // Save to local storage
+        function saveTasks() {
+            localStorage.setItem('raidpoTasks', JSON.stringify(tasks));
+        }
+
+        // Event listeners
+        addTaskBtn.addEventListener('click', addTask);
+        taskInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addTask();
+        });
+
+        // Initial render
+        renderTasks();
+    </script>
+</body>
+</html>
